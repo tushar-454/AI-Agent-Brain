@@ -1,0 +1,22 @@
+# 11 — Error Handling, Formatting & Environment
+
+## Error Handling
+
+- Never swallow errors silently (`catch {}`).
+- Actions return `{ data, error }` shape — never throw raw errors up to components.
+- Error messages shown to the user are always short and specific (from Zod `.pipe()` refinements or explicit checks) — never leak stack traces or raw DB errors to the client.
+
+## Comments & Documentation
+
+- Code should be self-explanatory through naming; comments explain **why**, not **what**.
+- One-line JSDoc on exported service/action functions describing intent.
+- No commented-out dead code left in commits.
+
+## Formatting & Linting
+
+- Prettier + ESLint enforced. 2-space indentation, double quotes, semicolons required, trailing commas on multiline.
+- No unused imports/variables — must be caught by lint.
+
+## Environment & Secrets
+
+- All secrets/config accessed only through `lib/env.ts`, parsed with Zod at startup. Never scatter `process.env.X` across the codebase.

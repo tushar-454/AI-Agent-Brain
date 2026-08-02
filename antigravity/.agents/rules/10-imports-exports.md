@@ -1,0 +1,19 @@
+# 10 — Imports & Exports
+
+## Exports
+
+- Named exports everywhere.
+- **Exception:** Next.js special files (`page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`) must use `export default` — framework requirement.
+- Never mix default + named exports in the same non-Next.js file.
+
+## Imports
+
+- Always use the `@/` path alias. No relative `../../../` chains, ever.
+
+  ```ts
+  import { UserAvatar } from "@/components/shared/user-avatar";
+  import type { User, UserAvatarProps } from "@/types/user.type";
+  import { getUserAction } from "@/actions/user.action";
+  ```
+
+- Import order: external packages → `@/` internal → `import type` → (relative only if same folder, rare).

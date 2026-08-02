@@ -1,0 +1,110 @@
+# 03 — TypeScript & Types
+
+## Functions
+
+- **Always use the `function` keyword. Never arrow functions** — for components, hooks, utilities, services, actions, everything.
+
+  ```ts
+  // correct
+  export function getUserById(id: string) { ... }
+  export function UserAvatar({ user }: UserAvatarProps) { ... }
+
+  // wrong
+  export const getUserById = (id: string) => { ... }
+  ```
+
+- Only exception: inline callbacks passed as arguments (e.g. `array.map((x) => x.id)`), where brevity matters more.
+
+## `type` over `interface`
+
+- **Default to `type` everywhere.**
+- Use `interface` **only** when the shape needs to be extended (`extends`) by another shape later.
+
+  ```ts
+  // default
+  export type User = {
+    id: string;
+    email: string;
+  };
+
+  // only when extension is needed
+  export interface BaseEntity {
+    id: string;
+    createdAt: Date;
+  }
+  export interface User extends BaseEntity {
+    email: string;
+  }
+  ```
+
+- Never use `any`. Use `unknown` and narrow with a type guard.
+
+## Generics for Reusable Shapes
+
+  ```ts
+  export type ApiResponse<T> = {
+    data: T;
+    error?: string;
+  };
+
+  export type PaginatedResult<T> = {
+    items: T[];
+    total: number;
+    page: number;
+  };
+  ```
+
+## Types Folder — Single Source of Truth
+
+- **Every type in the project lives in `/src/types`, grouped by domain — including component prop types.** No local `interface Props` inside component files.
+- One file per entity/feature. `types/user.type.ts` holds: the `User` entity type, API input/output types, and every prop type for user-related components (`UserAvatarProps`, `UserCardProps`, etc.).
+
+  ```ts
+  // src/types/user.type.ts
+  export type User = {
+    id: string;
+    email: string;
+    name: string;
+    role: UserRole;
+  };
+
+  export type UserRole = "admin" | "customer";
+
+  export type CreateUserInput = {
+    email: string;
+    name: string;
+  };
+
+  // component prop types for this domain also live here
+  export type UserAvatarProps = {
+    user: User;
+    size?: "sm" | "md" | "lg";
+  };
+
+  // type guard — colocated with the type it checks
+  export function isUser(data: unknown): data is User {
+    if (typeof data !== "object" || data === null) return false;
+    const d = data as Record<string, unknown>;
+    return (
+      typeof d.id === "string" &&
+      typeof d.email === "string" &&
+      typeof d.name === "string"
+    );
+  }
+  ```
+
+- Import types everywhere with `import type { User } from "@/types/user.type"`.
+
+## Type Guards (`is` keyword) — required at every data boundary
+
+Whenever data crosses a boundary (action → component, API response → client, external data → app), pass it through a type guard before trusting it. This keeps the whole app typed end-to-end instead of relying on `as User` casts.
+
+```ts
+// after calling an action from a component:
+const result = await getUserAction(id);
+if (!isUser(result.data)) {
+  // handle invalid/unexpected shape
+  return null;
+}
+// result.data is now safely typed as User
+```
