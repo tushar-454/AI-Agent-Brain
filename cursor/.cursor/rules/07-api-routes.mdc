@@ -1,0 +1,28 @@
+---
+description: 07 — API Layer (GET Rule)
+alwaysApply: true
+---
+
+# 07 — API Layer (GET Rule)
+
+- **GET requests:** create BOTH a server action (`actions/user.action.ts`) AND an API route (`app/api/user/route.ts`). The route handler imports and calls the **exact same function** from the action file — no separate logic in the route.
+
+  ```ts
+  // src/app/api/user/route.ts
+  import { NextResponse } from "next/server";
+  import { getUserAction } from "@/actions/user.action";
+
+  export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id") ?? "";
+
+    const result = await getUserAction(id);
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: 404 });
+    }
+    return NextResponse.json({ data: result.data });
+  }
+  ```
+
+- **POST / PUT / DELETE:** Server Action only. No API route. Call the action directly from the component/form.
+- Never write database or business logic inside `route.ts` — it only adapts the action's response to an HTTP response.

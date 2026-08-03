@@ -1,0 +1,14 @@
+---
+description: 09 — Components
+alwaysApply: true
+---
+
+# 09 — Components
+
+- **UI primitives** (`components/ui/`): shadcn-style base elements — `card.tsx`, `table.tsx` — multiple related exports in one file is fine (`Card`, `CardHeader`, `CardContent`).
+- **Feature/section components** (`components/shared/`): one component per file, always. Split large UI (grids, flex sections, composite cards) into individual colocated files rather than one big file.
+- **No local prop types** — every prop type lives in the matching domain file under `/types` (see `03-typescript-types.md`).
+- Server Components by default.
+- **`"use client"` only on the bottom-most leaf component that actually needs interactivity/hooks/browser APIs — never on a parent/container just to unlock a child.** Push client boundaries as deep as possible.
+- Split aggressively: if a component is doing data-shaping, layout, AND interactivity, break it into three colocated pieces (e.g. `user-list.tsx` server component → `user-list-item.tsx` → `user-list-item-actions.tsx` as the client leaf).
+- Keep files small and single-purpose — one job per file.

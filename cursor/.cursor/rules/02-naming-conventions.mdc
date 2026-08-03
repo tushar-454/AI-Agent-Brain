@@ -1,0 +1,30 @@
+---
+description: 02 — Naming Conventions
+alwaysApply: true
+---
+
+# 02 — Naming Conventions
+
+## File Naming
+
+- All files: `kebab-case`.
+- Files inside a type-folder follow `<name>.<folderName-singular>.ts`:
+  - `user.service.ts`, `user.action.ts`, `user.validator.ts`, `user.type.ts`, `user.store.ts`
+- Component files stay plain kebab-case: `user-avatar.tsx`.
+- Next.js special files keep their required names: `page.tsx`, `layout.tsx`, `route.ts`, etc.
+
+## General Naming Table
+
+| Thing | Convention | Example |
+|---|---|---|
+| Files (general) | kebab-case | `user-profile.tsx` |
+| Files (type-folders) | `name.folderName.ts` | `user.service.ts`, `user.action.ts` |
+| Components | PascalCase | `UserProfile` |
+| Functions/variables | camelCase | `getUserById` |
+| Types | PascalCase | `User`, `CreateUserInput` |
+| Zustand stores | camelCase, `use` prefix | `useCartStore` |
+| Constants | UPPER_SNAKE_CASE | `MAX_UPLOAD_SIZE` |
+| Zod schemas | camelCase, `Schema` suffix | `createUserSchema` |
+| DB tables (Drizzle) | snake_case | `user_profiles` |
+| Type guards | `is` prefix | `isUser`, `isProduct` |
+| Env variables | UPPER_SNAKE_CASE | `DATABASE_URL` |
