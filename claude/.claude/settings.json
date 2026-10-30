@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf /)",
+      "Read(./.env*)",
+      "Read(~/.ssh/*)",
+      "Read(~/.aws/*)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(npm publish *)"
+    ],
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Bash(npm run *)",
+      "Bash(npm test*)",
+      "Bash(npx *)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
